@@ -15,6 +15,7 @@ namespace TestTwinCoreProject.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<Account>().Property(p => p.Id).ValueGeneratedOnAdd();
         }
     }
 }

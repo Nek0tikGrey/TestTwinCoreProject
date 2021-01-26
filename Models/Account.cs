@@ -7,12 +7,6 @@ namespace TestTwinCoreProject.Models
 {
     public class Account:IdentityUser<Guid>
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public override Guid Id
-        {
-            get { return base.Id; }
-            set { base.Id = value; }
-        }
+        public DateTime DateBirthday { get; set; }
     }
 }
