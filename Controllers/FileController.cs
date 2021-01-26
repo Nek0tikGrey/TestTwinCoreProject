@@ -28,9 +28,7 @@ namespace TestTwinCoreProject.Controllers
         {
             foreach (var uploadedFile in uploads)
             {
-                // путь к папке Files
-                string path = "/Files/" + uploadedFile.FileName;
-                // сохраняем файл в папку Files в каталоге wwwroot
+                string path = "/files/" + uploadedFile.FileName;
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
@@ -44,9 +42,7 @@ namespace TestTwinCoreProject.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> ShowFile(Guid id)
-        {
-         
-
+        {       
             FileModel result = _context.Files.Where(op => op.Id == id).FirstOrDefault();
             if (result != null)
                 return View(result);
