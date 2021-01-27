@@ -6,6 +6,8 @@
 {
     <p>@User.Identity.Name</p>
 
+    <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="ChangePassword" >Сменить пароль</a>
+
     <form method="post" asp-controller="Account" asp-action="Logout">
         <input type="submit" value="Выход" />
     </form>
