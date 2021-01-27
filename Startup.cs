@@ -29,9 +29,11 @@ namespace TestTwinCoreProject
            
             services.AddDbContext<TwinCoreDbContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<Account, ApplicationRole>()
                 .AddEntityFrameworkStores<TwinCoreDbContext>()
                 .AddDefaultTokenProviders();
+
              services.AddControllersWithViews();
         }
 
