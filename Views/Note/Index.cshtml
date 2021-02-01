@@ -1,34 +1,23 @@
 ﻿@model IEnumerable<TestTwinCoreProject.Models.Note>
 @{
-    ViewBag.Title = "Щоденик";
+    ViewBag.Title = "Щоденник";
 }
 
-<a asp-action="Create">Додати нотатку</a>
+<button type="button" id="CreateNoteBtn">Додати нотатку</button>
 
-<table class="table">
 
-    <tr>
-        <th>Id</th>
-        <th>User id</th>
-        <th>Заголовок</th>
-        <th>Вміст</th>
-        <th>Дата</th>
-        <th></th>
-    </tr>
+<div id="CreateNoteBlock"></div>
+
 @foreach (var note in Model)
 {
-    <tr>
-        <td>@note.Id</td>
-        <td>@note.AccountId</td>
-        <td>@note.Title</td>
-        <td>@note.Content</td>
-        <td>@note.DateTime</td>
-        <td>
+    <div class="post @note.Id">
+        <span class="title">@note.Title</span>
+        <div class="post-content">
+            @note.Content
+        </div>
+        <div class="post-content-img">
 
-            <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@note.Id">Изменить</a>
-            <a class="btn btn-sm btn-primary" asp-action="Delete" asp-route-id="@note.Id">Удалить</a>
-
-        </td>
-    </tr>
+        </div>
+    </div>
 }
-</table>
+
