@@ -7,6 +7,7 @@ namespace TestTwinCoreProject.Models
     public class TwinCoreDbContext : IdentityDbContext<Account,ApplicationRole,Guid>
     {
         public DbSet<FileModel> Files { get; set; }
+        public DbSet<Note> Notes { get; set; }
         public TwinCoreDbContext(DbContextOptions<TwinCoreDbContext> options):base(options)
         {
             Database.EnsureCreated();

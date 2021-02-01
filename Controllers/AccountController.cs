@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
@@ -110,17 +107,17 @@ namespace TestTwinCoreProject.Controllers
                 Account user = await _userManager.GetUserAsync(User);
                 if (user != null)
                 {
-                    var _passwordValidator =
+                    var passwordValidator =
                         HttpContext.RequestServices.GetService(typeof(IPasswordValidator<Account>)) as IPasswordValidator<Account>;
-                    var _passwordHasher =
+                    var passwordHasher =
                         HttpContext.RequestServices.GetService(typeof(IPasswordHasher<Account>)) as IPasswordHasher<Account>;
 
                     IdentityResult result =
-                        await _passwordValidator.ValidateAsync(_userManager, user, model.NewPassword);
+                        await passwordValidator.ValidateAsync(_userManager, user, model.NewPassword);
 
                     if (result.Succeeded)
                     {
-                        user.PasswordHash = _passwordHasher.HashPassword(user, model.NewPassword);
+                        user.PasswordHash = passwordHasher.HashPassword(user, model.NewPassword);
                         await _userManager.UpdateAsync(user);
                         return RedirectToAction("Index","Home");
                     }
