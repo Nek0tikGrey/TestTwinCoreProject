@@ -26,7 +26,7 @@ namespace TestTwinCoreProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create() => PartialView();
 
         [HttpPost]
         public async Task<IActionResult> Create(Note note)
@@ -65,7 +65,6 @@ namespace TestTwinCoreProject.Controllers
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
             return View(note);
         }
 
