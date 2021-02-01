@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace TestTwinCoreProject.ViewModels
+﻿namespace TestTwinCoreProject.ViewModels
 {
     public class ChangePasswordViewModel
     {

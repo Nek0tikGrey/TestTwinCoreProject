@@ -11,7 +11,7 @@ namespace TestTwinCoreProject.Controllers
 {
     public class UserController : Controller
     {
-        UserManager<Account> _userManager;
+        readonly UserManager<Account> _userManager;
 
         public UserController(UserManager<Account> userManager)
         {

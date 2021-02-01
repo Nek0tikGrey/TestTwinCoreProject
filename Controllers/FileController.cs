@@ -43,7 +43,7 @@ namespace TestTwinCoreProject.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowFile(Guid id)
         {       
-            FileModel result = _context.Files.Where(op => op.Id == id).FirstOrDefault();
+            FileModel result =await _context.Files.Where(op => op.Id == id).FirstOrDefaultAsync();
             if (result != null)
                 return View(result);
             else

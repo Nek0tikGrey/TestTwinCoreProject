@@ -1,0 +1,20 @@
+﻿@model TestTwinCoreProject.Models.Note
+@{
+    ViewBag.Title = "Редагувати";
+}
+
+<form asp-action="Edit" asp-controller="Note">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Email</label>
+        <input type="text" asp-for="Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Content" class="control-label">Email</label>
+        <input type="text" asp-for="Content" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Добавить" class="btn btn-outline-secondary" />
+    </div>
+</form>
