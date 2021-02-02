@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TestTwinCoreProject.Models;
@@ -26,72 +27,142 @@ namespace TestTwinCoreProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => PartialView();
-
-        [HttpPost]
-        public async Task<IActionResult> Create(Note note)
+        public async Task<IActionResult> CreateOrEdit(Guid? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
+                return View(new Note());
+            else
             {
-                var user =await userManager.GetUserAsync(User);
-                note.AccountId = user.Id;
-                note.DateTime=DateTime.Now;
-                await context.Notes.AddAsync(note);
-                await context.SaveChangesAsync();
-               return RedirectToAction("Index");
-            }
-
-            return View(note);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id != null)
-            {
-                var note =await context.Notes.FirstOrDefaultAsync(p => p.Id == id);
+                var note = await context.Notes.FindAsync(id);
                 if (note != null) return View(note);
+                else
+                {
+                    return NotFound();
+                }
             }
-
-            return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Note note)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOrEdit(Guid? id, Note note)
         {
             if (ModelState.IsValid)
             {
-                context.Notes.Update(note);
-                await context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(note);
-        }
+                if (id == Guid.Empty)
+                {
+                    note.DateTime=DateTime.Now;
+                    var user = await userManager.GetUserAsync(User);
+                    note.AccountId = user.Id;
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(Guid? id)
+                    await context.Notes.AddAsync(note);
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+                    try
+                    {
+                        var user = await userManager.GetUserAsync(User);
+                        note.AccountId = user.Id;
+                        context.Notes.Update(note);
+                        await context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!TransactionModelExists(note.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                   
+                }
+
+                return Json(new
+                {
+                    IsValid = true,
+                    html = Helper.RenderRazorViewToString(this, "_ViewAll", await 
+                        context.Notes.Where( p => p.AccountId == userManager.GetUserAsync(User).Result.Id).ToListAsync())
+                });
+            }
+            return Json(new { IsValid = false, html = Helper.RenderRazorViewToString(this,"CreateOrEdit",note) });
+        }
+        private bool TransactionModelExists(Guid id)
         {
-            if (id != null)
-            {
-                var note = await context.Notes.FirstOrDefaultAsync(p => p.Id == id);
-                if (note != null) return View(note);
-            }
-
-            return NotFound();
+            return context.Notes.Any(e => e.Id == id);
         }
+        //[HttpPost]
+        //public async Task<IActionResult> Create(Note note)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user =await userManager.GetUserAsync(User);
+        //        note.AccountId = user.Id;
+        //        note.DateTime=DateTime.Now;
+        //        await context.Notes.AddAsync(note);
+        //        await context.SaveChangesAsync();
+        //       return RedirectToAction("Index");
+        //    }
+
+        //    return View(note);
+        //}
+
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(Guid? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        var note =await context.Notes.FirstOrDefaultAsync(p => p.Id == id);
+        //        if (note != null) return PartialView(note);
+        //    }
+
+        //    return NotFound();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(Note note)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        context.Notes.Update(note);
+        //        await context.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return PartialView(note);
+        //}
+
+        //[HttpGet]
+        //public async Task<IActionResult> Delete(Guid? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        var note = await context.Notes.FirstOrDefaultAsync(p => p.Id == id);
+        //        if (note != null) return PartialView(note);
+        //    }
+
+        //    return NotFound();
+        //}
 
         [HttpPost]
         [ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirm(Guid? id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (id != null)
+            if (id != Guid.Empty)
             {
-                var note =await context.Notes.FirstOrDefaultAsync(p => p.Id == id);
+                var note =await context.Notes.FindAsync(id);
                 if (note != null)
                 {
                     context.Notes.Remove(note);
                     await context.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        IsValid = true,
+                        html = Helper.RenderRazorViewToString(this, "_ViewAll", await
+                            context.Notes.Where(p => p.AccountId == userManager.GetUserAsync(User).Result.Id).ToListAsync())
+                    });
                 }
             }
             return  NotFound();

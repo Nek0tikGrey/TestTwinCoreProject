@@ -3,21 +3,25 @@
     ViewBag.Title = "Щоденник";
 }
 
-<button type="button" id="CreateNoteBtn">Додати нотатку</button>
+<button onclick="showInPopup('@Url.Action("CreateOrEdit","Note",null,Context.Request.Scheme)','Нова нотатка')" id="CreateNoteBtn" class="create-note-btn mb-3" type="button">
+    <div class="create-note-btn-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M1.592 2.712L2.38 7.25h4.87a.75.75 0 110 1.5H2.38l-.788 4.538L13.929 8 1.592 2.712zM.989 8L.064 2.68a1.341 1.341 0 011.85-1.462l13.402 5.744a1.13 1.13 0 010 2.076L1.913 14.782a1.341 1.341 0 01-1.85-1.463L.99 8z"></path></svg></div>
+    Додати нотатку
+</button>
 
 
-<div id="CreateNoteBlock"></div>
-
-@foreach (var note in Model)
-{
-    <div class="post @note.Id">
-        <span class="title">@note.Title</span>
-        <div class="post-content">
-            @note.Content
-        </div>
-        <div class="post-content-img">
-
+<div class="modal" tabindex="-1" role="dialog" id="CreateNoteBlock">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
         </div>
     </div>
-}
+</div>
 
+
+<div id="view-all-post">
+    @await Html.PartialAsync("_ViewAll", Model)
+</div>

@@ -45,3 +45,40 @@ a.navbar-brand {
     object-fit: cover;
     max-width: -webkit-fill-available;
 }
+.post-date {
+    text-align: right;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.create-note-btn {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    align-items: center;
+    width: -webkit-fill-available;
+    border: 1px solid #d5d5d5;
+    border-radius: 35px !important;
+    background-color: #ebebeb;
+    font-style: italic;
+    font-weight: 300;
+}
+.create-note-btn:hover {
+    background-color: #d4d4d4;
+    transition-duration: 0.3s;
+   
+}
+.create-note-btn-svg {
+    padding-right: 8px;
+}
+
+.post-textarea {
+    height: 50vh;
+}
+.post-delete {
+    background-image: url("/img/trash.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: inherit;
+    border: none;
+}
