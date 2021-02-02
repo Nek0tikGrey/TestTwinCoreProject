@@ -1,17 +1,18 @@
 ﻿@model TestTwinCoreProject.Models.Note
 @{
     ViewBag.Title = "Додати";
+    Layout = null;
 }
 
-<form asp-action="Create" asp-controller="Note">
+<form asp-action="CreateOrEdit" asp-controller="Note" asp-route-id="@Model.Id" onsubmit="return  jQueryAjaxPost(this);" autocomplete="off">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
+    <div class="form-group m-1">
         <label asp-for="Title" class="control-label">Заголовок</label>
         <input type="text" asp-for="Title" class="form-control" />
     </div>
-    <div class="form-group">
+    <div class="form-group m-1">
         <label asp-for="Content" class="control-label">Вміст</label>
-        <input type="text" asp-for="Content" class="form-control" />
+        <textarea  asp-for="Content" class="form-control post-textarea" ></textarea>
     </div>
 
     <div class="form-group">
