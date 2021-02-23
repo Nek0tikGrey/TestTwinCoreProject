@@ -108,3 +108,13 @@ a.btn:hover {
 .hide {
     display: none;
 }
+
+@media screen and (max-width: 576px) {
+    .navbar-menu-item {
+        position: absolute;
+        top: 100%;
+        left: 0px;
+    }
+
+    .navbar-menu-item li { padding: 5px 10px; }
+}
