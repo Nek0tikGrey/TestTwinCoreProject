@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
@@ -10,11 +12,13 @@ namespace TestTwinCoreProject.Controllers
     {
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
+        private readonly TwinCoreDbContext _context;
 
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager)
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, TwinCoreDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
         [HttpGet]
         public IActionResult Register()
@@ -139,7 +143,25 @@ namespace TestTwinCoreProject.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
+            UserAccountViewModel data = new UserAccountViewModel();
+            var user =await _userManager.GetUserAsync(User);
+            data.UserName = user.UserName;
+            data.Email = user.Email;
+            data.Avatars = _context.Files.Where(p => p.TypeTo == FileModel.Type.Avatar && p.Guid == user.Id).ToList();
+
+            return View(data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowAvatar()
+        {
+           // var user = await _userManager.GetUserAsync(User);
+            string path="";
+            /*path= _context.Files.LastOrDefault(p => p.Guid == user.Id).Path*/;
             
+            if (path == string.Empty) path = "img/avatar.png";
+            ViewData.Add("img",path);
+            return PartialView();
         }
     }
 }

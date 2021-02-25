@@ -13,7 +13,7 @@ namespace TestTwinCoreProject.ViewModels
         public string Email { get; set; }
         public IList<FileModel> Avatars { get; set; }
 
-        UserAccountViewModel()
+        public UserAccountViewModel()
         {
             Avatars = new List<FileModel>();
         }
