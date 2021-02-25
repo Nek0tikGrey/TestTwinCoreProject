@@ -136,5 +136,10 @@ namespace TestTwinCoreProject.Controllers
             }
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> UserAccount()
+        {
+            
+        }
     }
 }
