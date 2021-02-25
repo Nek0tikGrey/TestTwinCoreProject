@@ -12,8 +12,33 @@ showInPopup = (url, title) => {
                 $("#CreateNoteBlock .modal-title").html(title);
                 $("#CreateNoteBlock").modal('show');
             }
-    })
+        });
 }
+
+//jQueryAjaxPostLogout = form => {
+
+//    try {
+//        $.ajax({
+//            type: 'POST',
+//            url: form.action,
+//            data: new FormData(form),
+//            contentType: false,
+//            processData: false,
+//            error: function(err) {
+//                console.log(err);
+//            }
+
+//        });
+//        return false;
+//    } catch (ex) {
+//        console.log(ex);
+//    }
+
+//}
+
+
+
+
 
 jQueryAjaxPost = form => {
     try {
@@ -70,3 +95,12 @@ jQueryAjaxDelete = form => {
     }
     
 }
+
+
+
+$(document).ready(function () {
+
+
+    $("#Avatar").load("/Account/ShowAvatar");
+
+});

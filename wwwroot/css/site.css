@@ -109,8 +109,35 @@ a.btn:hover {
     display: none;
 }
 
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 
+.avatar-btn {
+    border: none;
+    border-color: transparent;
+    background-color: transparent;
+}
 
+.avatar-item-menu {
+    transition-delay: 0.1s;
+}
+.avatar-item-menu:hover {
+     background-color: #588184 !important;
+}
+.avatar-item-menu-btn {
+    border: none;
+    background: transparent;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+    .avatar-item-menu-btn:focus {
+        outline: none;
+    }
 
 @media screen and (max-width: 576px) {
     .navbar-menu-item {
