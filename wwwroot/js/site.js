@@ -15,31 +15,6 @@ showInPopup = (url, title) => {
         });
 }
 
-//jQueryAjaxPostLogout = form => {
-
-//    try {
-//        $.ajax({
-//            type: 'POST',
-//            url: form.action,
-//            data: new FormData(form),
-//            contentType: false,
-//            processData: false,
-//            error: function(err) {
-//                console.log(err);
-//            }
-
-//        });
-//        return false;
-//    } catch (ex) {
-//        console.log(ex);
-//    }
-
-//}
-
-
-
-
-
 jQueryAjaxPost = form => {
     try {
         $.ajax({

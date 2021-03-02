@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model TestTwinCoreProject.ViewModels.UserAccountViewModel
 @{
+    ViewData["Title"] = "Моя страница";
 }
+
+<div class="container-md">
+    <div class="d-flex align-items-center flex-column justify-content-center mt-5 pt-5">
+        <div class="user-img">
+            <a class="user-avatar-change">
+                <img src="~/img/avatar.png" />
+            </a>
+        </div>
+
+        <div class="user-information">
+            <div class="user-information-item">
+                <span>Id</span>
+                <span class="user-information-item-text">@Model.Id</span>
+                <span></span>
+            </div>
+
+            <div id="UserName" class="user-information-item">
+                <span>UserName</span>
+                <span class="user-information-item-text">@Model.UserName</span>
+                <a  class="user-information-change"></a>
+            </div>
+            
+            <div id="BirhDate" class="user-information-item">
+                <span>Birthday</span>
+                <span class="user-information-item-text">@Model.BirthDate</span>
+                <a class="user-information-change"></a>
+            </div>
+            
+            <div id="Email" class="user-information-item">
+                <span>Email</span>
+                <span class="user-information-item-text">@Model.Email</span>
+                <a class="user-information-change"></a>
+            </div>
+
+        </div>
+    </div>
+</div>

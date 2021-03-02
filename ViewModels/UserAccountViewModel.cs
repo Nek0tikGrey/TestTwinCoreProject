@@ -11,6 +11,7 @@ namespace TestTwinCoreProject.ViewModels
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public DateTime BirthDate { get; set; }
         public IList<FileModel> Avatars { get; set; }
 
         public UserAccountViewModel()

@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
@@ -30,8 +30,8 @@ namespace TestTwinCoreProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                Account user = new Account { Email = model.Email, UserName = model.Email,DateBirthday=model.DateBirthday };
-                
+                Account user = new Account { Email = model.Email, UserName = model.Email, DateBirthday = model.DateBirthday };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -123,7 +123,7 @@ namespace TestTwinCoreProject.Controllers
                     {
                         user.PasswordHash = passwordHasher.HashPassword(user, model.NewPassword);
                         await _userManager.UpdateAsync(user);
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -144,24 +144,26 @@ namespace TestTwinCoreProject.Controllers
         public async Task<IActionResult> UserAccount()
         {
             UserAccountViewModel data = new UserAccountViewModel();
-            var user =await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             data.UserName = user.UserName;
             data.Email = user.Email;
             data.Avatars = _context.Files.Where(p => p.TypeTo == FileModel.Type.Avatar && p.Guid == user.Id).ToList();
-
+            data.BirthDate = user.DateBirthday;
+            data.Id = user.Id;
             return View(data);
         }
 
         [HttpGet]
         public async Task<IActionResult> ShowAvatar()
         {
-           // var user = await _userManager.GetUserAsync(User);
-            string path="";
-            /*path= _context.Files.LastOrDefault(p => p.Guid == user.Id).Path*/;
-            
+            // var user = await _userManager.GetUserAsync(User);
+            string path = "";
+            /*path= _context.Files.LastOrDefault(p => p.Guid == user.Id).Path;*/
+
             if (path == string.Empty) path = "img/avatar.png";
-            ViewData.Add("img",path);
+            ViewData.Add("img", path);
             return PartialView();
         }
+
     }
 }
