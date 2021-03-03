@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
@@ -8,6 +9,7 @@ using TestTwinCoreProject.ViewModels;
 
 namespace TestTwinCoreProject.Controllers
 {
+    [Authorize(Roles ="User")]
     public class AccountController : Controller
     {
         private readonly UserManager<Account> _userManager;
@@ -20,27 +22,79 @@ namespace TestTwinCoreProject.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+        [AllowAnonymous]
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult>Register(string id)
         {
-            return View();
+            if (_context.InviteUsers.Any(predicate => predicate.InviteCode == id))
+            {
+                RegisterViewModel model = new RegisterViewModel();
+                var invite = _context.InviteUsers.FirstOrDefault(predicate => predicate.InviteCode == id);
+
+                if (invite == null)
+                    return NotFound("Invite code is not found");
+                Account user =await _userManager.FindByIdAsync(invite.UserId.ToString());
+                model.Email = user.Email;
+                model.InviteCode = id;
+                model.DateBirthday = DateTime.Now;
+                return View(model);
+            }
+            return BadRequest("Invalid invide code");
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Account user = new Account { Email = model.Email, UserName = model.Email, DateBirthday = model.DateBirthday };
+                var invite = _context.InviteUsers.FirstOrDefault(predicate => predicate.InviteCode == model.InviteCode);
 
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (invite == null)
+                    return NotFound("Invite code is not found");
+                Account user = await _userManager.FindByIdAsync(invite.UserId.ToString());
+                user.DateBirthday = model.DateBirthday;
+                var resultInformation = await _userManager.UpdateAsync(user);
+
+
+                if (user != null)
                 {
-                    await _signInManager.SignInAsync(user, false);
+                    var _passwordValidator =
+                        HttpContext.RequestServices.GetService(typeof(IPasswordValidator<Account>)) as IPasswordValidator<Account>;
+                    var _passwordHasher =
+                        HttpContext.RequestServices.GetService(typeof(IPasswordHasher<Account>)) as IPasswordHasher<Account>;
+
+                    IdentityResult result =
+                        await _passwordValidator.ValidateAsync(_userManager, user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
+                        await _userManager.UpdateAsync(user);
+                        await _userManager.AddToRoleAsync(user, "User");
+                        return RedirectToAction("Index","Home");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Пользователь не найден");
+                }
+
+                if (resultInformation.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user,false);
+                    _context.InviteUsers.Remove(invite);
+                    await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
+                    foreach (var error in resultInformation.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
@@ -48,13 +102,13 @@ namespace TestTwinCoreProject.Controllers
             }
             return View(model);
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -82,7 +136,7 @@ namespace TestTwinCoreProject.Controllers
             }
             return View(model);
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()

@@ -26,15 +26,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Index">User management</a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Note" asp-action="Index">Note</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Role" asp-action="Index">Role</a>
-                                </li>
+
+                                
                             </ul>
                         </div>
                     </div>
@@ -49,11 +46,31 @@
 
                                 </a>
                                 <ul class="dropdown-menu p-0 bg-dark" aria-labelledby="Avatar">
-                                    <li><a class="dropdown-item text-light avatar-item-menu" asp-controller="Account" asp-action="UserAccount">Моя страница</a></li>
+                                    <li>
+                                        <a class="dropdown-item text-light avatar-item-menu" asp-controller="Account" asp-action="UserAccount">Моя страница</a>
+                                    </li>
 
-                                    <li><form class="dropdown-item text-light avatar-item-menu" method="post" asp-controller="Account" asp-action="Logout">
-                                        <input class="avatar-item-menu-btn" type="submit" value="Выход"/>
-                                    </form></li>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="dropdown-item text-light avatar-item-menu" asp-area="" asp-controller="User" asp-action="Index">User management</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="dropdown-item text-light avatar-item-menu" asp-area="" asp-controller="Role" asp-action="Index">Role</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="dropdown-item text-light avatar-item-menu" asp-area="" asp-controller="InviteUser" asp-action="Index">Invite</a>
+                                        </li>
+                                    }
+
+                                    <li>
+                                        <form class="dropdown-item text-light avatar-item-menu" method="post" asp-controller="Account" asp-action="Logout">
+                                            <input class="avatar-item-menu-btn" type="submit" value="Выход" />
+                                        </form>
+                                    </li>
                                 </ul>
                             </div>
                         }
@@ -76,7 +93,7 @@
         </nav>
     </header>
     <div class="container-md">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 mt-5 pt-5">
             @RenderBody()
         </main>
     </div>

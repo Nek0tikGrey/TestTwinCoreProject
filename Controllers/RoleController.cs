@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TestTwinCoreProject.Models;
 using TestTwinCoreProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestTwinCoreProject.Controllers
 {
-    public class RoleController : Controller
+    [Authorize(Roles ="Admin")]
+   public class RoleController : Controller
     {
         RoleManager<ApplicationRole> _roleManager;
         UserManager<Account> _userManager;

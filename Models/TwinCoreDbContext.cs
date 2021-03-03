@@ -8,9 +8,10 @@ namespace TestTwinCoreProject.Models
     {
         public DbSet<FileModel> Files { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<InviteUser> InviteUsers { get; set; }
+
         public TwinCoreDbContext(DbContextOptions<TwinCoreDbContext> options):base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

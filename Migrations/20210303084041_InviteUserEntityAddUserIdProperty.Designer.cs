@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestTwinCoreProject.Models;
 
 namespace TestTwinCoreProject.Migrations
 {
     [DbContext(typeof(TwinCoreDbContext))]
-    partial class TwinCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210303084041_InviteUserEntityAddUserIdProperty")]
+    partial class InviteUserEntityAddUserIdProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

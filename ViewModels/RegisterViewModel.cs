@@ -26,5 +26,8 @@ namespace TestTwinCoreProject.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
+        [Required]
+        [ScaffoldColumn(true)]
+        public string InviteCode { get; set; }
     }
 }
