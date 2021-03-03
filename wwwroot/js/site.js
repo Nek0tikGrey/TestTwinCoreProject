@@ -71,11 +71,24 @@ jQueryAjaxDelete = form => {
     
 }
 
-
-
 $(document).ready(function () {
 
 
     $("#Avatar").load("/Account/ShowAvatar");
 
 });
+
+ChangeInformation = (id) => {
+    $("#" + id).addClass("user-information-item-text-change").removeAttr("disabled");
+    $("#sbm-btn").removeClass("hide").addClass("save-changes");
+
+}
+AllInputEnable = (classCss) => {
+    //$("." + classCss).querySelectorAll("input").removeAttr("disabled");
+
+    //console.log($("." + classCss).querySelectorAll("input"));
+    ChangeInformation('UserName');
+    ChangeInformation('BirhDate');
+    ChangeInformation("Email");
+
+}

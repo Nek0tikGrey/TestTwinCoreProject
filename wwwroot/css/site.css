@@ -247,23 +247,35 @@ a.navbar-brand {
 }
 .user-information-item {
     display: flex;
-    justify-content: space-between;
-    text-align: left;
     padding: 1vh 0;
 }
 .user-information-item span {
     display: block;   
 }
 .user-information-item-text {
-    padding: 0 5vw
+    display: block;
+    padding: 1vh 1vw;
+    border: 1mm ridge transparent;
+    font-size: 1.2em;
+    margin-left: auto;
+    width: 250px;
 }
 
-.user-information-item span:first-child{
-     flex: 1 1 auto;
- }
+.user-information-item span:first-child {
+    flex: 1 1 auto;
+    align-self: center;
+}
 .user-information-change {
     background-image: url("../img/edit-2.svg");
     background-repeat: no-repeat;
-    content:" ";
-    min-width:24px;
+    background-position: center;
+    content: " ";
+    min-width: 30px;
+}
+
+.user-information-item-text-change {
+    border: 1mm ridge rgb(6, 2, 8, 0.6);
+}
+.save-changes{
+   
 }
