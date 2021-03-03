@@ -10,32 +10,36 @@
                 <img src="~/img/avatar.png" />
             </a>
         </div>
+        <form method="post" asp-controller="Account" asp-action="ChangeUserInformation">
+            <div class="user-information ">
+                <div class="hide">
+                    <span>Id</span>
+                    <input asp-for="Id" class="user-information-item-text" value="@Model.Id"/>
+                    <span></span>
+                </div>
 
-        <div class="user-information">
-            <div class="user-information-item">
-                <span>Id</span>
-                <span class="user-information-item-text">@Model.Id</span>
-                <span></span>
-            </div>
+                <div class="user-information-item">
+                    <span>UserName</span>
+                    <input asp-for="UserName" id="UserName"  type="text" class="user-information-item-text" disabled value="@Model.UserName" />
+                    <a class="user-information-change" onclick="ChangeInformation('UserName')"></a>
+                </div>
 
-            <div id="UserName" class="user-information-item">
-                <span>UserName</span>
-                <span class="user-information-item-text">@Model.UserName</span>
-                <a  class="user-information-change"></a>
-            </div>
-            
-            <div id="BirhDate" class="user-information-item">
-                <span>Birthday</span>
-                <span class="user-information-item-text">@Model.BirthDate</span>
-                <a class="user-information-change"></a>
-            </div>
-            
-            <div id="Email" class="user-information-item">
-                <span>Email</span>
-                <span class="user-information-item-text">@Model.Email</span>
-                <a class="user-information-change"></a>
-            </div>
+                <div class="user-information-item">
+                    <span>Birthday</span>
+                    <input id="BirhDate" asp-for="BirthDate" type="date" class="user-information-item-text" disabled value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
+                    <a class="user-information-change" onclick="ChangeInformation('BirhDate')"></a>
+                </div>
 
-        </div>
+                <div class="user-information-item">
+                    <span>Email</span>
+                    <input asp-for="Email" id="Email" type="text" class="user-information-item-text" disabled value="@Model.Email" />
+                    <a class="user-information-change" onclick="ChangeInformation('Email')"></a>
+                </div>
+
+                <div id="sbm-btn" class="hide">
+                    <input class="user-information-btn" type="submit" onclick="AllInputEnable('user-information')" value="Зберегти зміни" />
+                </div>
+            </div>
+        </form>
     </div>
 </div>

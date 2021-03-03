@@ -202,11 +202,24 @@ namespace TestTwinCoreProject.Controllers
             data.UserName = user.UserName;
             data.Email = user.Email;
             data.Avatars = _context.Files.Where(p => p.TypeTo == FileModel.Type.Avatar && p.Guid == user.Id).ToList();
-            data.BirthDate = user.DateBirthday;
+            data.BirthDate =DateTime.Parse( user.DateBirthday.ToString("yyyy-MM-dd"));
             data.Id = user.Id;
             return View(data);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserInformation(UserAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.DateBirthday = model.BirthDate;
+                await  _userManager.UpdateAsync(user);
+            }
+            return RedirectToAction("UserAccount");
+        }
         [HttpGet]
         public async Task<IActionResult> ShowAvatar()
         {
