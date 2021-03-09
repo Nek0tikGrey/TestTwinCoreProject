@@ -15,11 +15,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\File\" />
     <Folder Include="wwwroot\files\" />
+    <Folder Include="wwwroot\Captcha\" />
   </ItemGroup>
 
 </Project>

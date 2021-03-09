@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
-using TestTwinCoreProject.Utility;
 using TestTwinCoreProject.ViewModels;
 
 namespace TestTwinCoreProject.Controllers
@@ -48,10 +47,12 @@ namespace TestTwinCoreProject.Controllers
                     context.InviteUsers.Add(invite);
                     await context.SaveChangesAsync();
 
-                    EmailService emailService = new EmailService();
-                    await emailService.SendEmailAsync(model.Email, "Invide to Nekotik site", "Invite: "
-                        + $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Account/Register/"
-                        + invite.InviteCode);
+
+                    //Enable to production
+                    //EmailService emailService = new EmailService();
+                    //await emailService.SendEmailAsync(model.Email, "Invide to Nekotik site", "Invite: "
+                    //    + $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Account/Register/"
+                    //    + invite.InviteCode);
 
                     return RedirectToAction("Index");
                 }

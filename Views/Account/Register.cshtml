@@ -22,10 +22,18 @@
         <input asp-for="PasswordConfirm" />
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
-    <div >
+    <div>
         <label asp-for="InviteCode"></label><br />
         <input asp-for="InviteCode" />
         <span asp-validation-for="InviteCode"></span>
+    </div>
+    <div>
+        <input class="hide" asp-for="CaptchaCodeGen" />
+
+        <label asp-for="CaptchaCode"></label><br />
+        <img src="~/Captcha/@String.Concat($"{@Model.CaptchaCodeGen}",".png")" /><br />
+        <input asp-for="CaptchaCode" autocomplete="off" />
+        <span asp-validation-for="CaptchaCode"></span>
     </div>
     <div>
         <input type="submit" value="Регистрация" />

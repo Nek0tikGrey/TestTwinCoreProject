@@ -14,7 +14,7 @@ namespace TestTwinCoreProject.ViewModels
 
         [Required]
         [Display(Name = "Дата рождения")]
-        public DateTime DateBirthday{ get; set; }
+        public DateTime DateBirthday { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -29,5 +29,12 @@ namespace TestTwinCoreProject.ViewModels
         [Required]
         [ScaffoldColumn(true)]
         public string InviteCode { get; set; }
+        [Required]
+        [ScaffoldColumn(true)]
+        public string CaptchaCodeGen { get; set; }
+        [Required]
+        [Compare("CaptchaCodeGen", ErrorMessage = "Код введен не правильно")]
+        [Display(Name = "Ведите код с изображения")]
+        public string CaptchaCode { get; set; }
     }
 }

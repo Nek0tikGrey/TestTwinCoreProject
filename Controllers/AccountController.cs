@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestTwinCoreProject.Models;
+using TestTwinCoreProject.Utility;
 using TestTwinCoreProject.ViewModels;
 
 namespace TestTwinCoreProject.Controllers
@@ -15,12 +17,13 @@ namespace TestTwinCoreProject.Controllers
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
         private readonly TwinCoreDbContext _context;
-
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, TwinCoreDbContext context)
+        private readonly IHostingEnvironment _enviroment;
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, TwinCoreDbContext context,IHostingEnvironment enviroment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _enviroment = enviroment;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -30,13 +33,17 @@ namespace TestTwinCoreProject.Controllers
             {
                 RegisterViewModel model = new RegisterViewModel();
                 var invite = _context.InviteUsers.FirstOrDefault(predicate => predicate.InviteCode == id);
-
                 if (invite == null)
                     return NotFound("Invite code is not found");
                 Account user =await _userManager.FindByIdAsync(invite.UserId.ToString());
                 model.Email = user.Email;
                 model.InviteCode = id;
                 model.DateBirthday = DateTime.Now;
+
+                model.CaptchaCodeGen = new Random().Next(0, 6666).ToString();
+                CaptchaImage captcha = new CaptchaImage(model.CaptchaCodeGen, 290, 80);
+                captcha.Image.Save(_enviroment.WebRootPath +"/Captcha/"+ model.CaptchaCodeGen+".png",System.Drawing.Imaging.ImageFormat.Png);
+                
                 return View(model);
             }
             return BadRequest("Invalid invide code");
@@ -53,8 +60,8 @@ namespace TestTwinCoreProject.Controllers
                     return NotFound("Invite code is not found");
                 Account user = await _userManager.FindByIdAsync(invite.UserId.ToString());
                 user.DateBirthday = model.DateBirthday;
-                var resultInformation = await _userManager.UpdateAsync(user);
-
+                //var resultInformation = await _userManager.UpdateAsync(user);
+                IdentityResult resultInformation=null;
 
                 if (user != null)
                 {
@@ -68,8 +75,14 @@ namespace TestTwinCoreProject.Controllers
                     if (result.Succeeded)
                     {
                         user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
-                        await _userManager.UpdateAsync(user);
+
+                        resultInformation= await _userManager.UpdateAsync(user);
+
+                        System.IO.File.Delete(_enviroment.WebRootPath + "/Captcha/" + model.CaptchaCodeGen + ".png");
+                        _context.InviteUsers.Remove(invite);
+                        await _context.SaveChangesAsync();
                         await _userManager.AddToRoleAsync(user, "User");
+                      
                         return RedirectToAction("Index","Home");
                     }
                     else
@@ -84,21 +97,19 @@ namespace TestTwinCoreProject.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Пользователь не найден");
                 }
-
-                if (resultInformation.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user,false);
-                    _context.InviteUsers.Remove(invite);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var error in resultInformation.Errors)
+                if (resultInformation != null)
+                    if (resultInformation.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        await _signInManager.SignInAsync(user, false);
+                        return RedirectToAction("Index", "Home");
                     }
-                }
+                    else
+                    {
+                        foreach (var error in resultInformation.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
             }
             return View(model);
         }
