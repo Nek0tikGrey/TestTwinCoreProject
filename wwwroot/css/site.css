@@ -203,7 +203,7 @@ a.navbar-brand {
     font-weight: 300;
 }
 
-.create-note-btn {
+.note-btn {
     display: flex;
     justify-content: start;
     padding: 10px;
@@ -216,12 +216,12 @@ a.navbar-brand {
     font-weight: 300;
 }
 
-.create-note-btn:hover {
+.note-btn:hover {
     background-color: #d4d4d4;
     transition-duration: 0.3s;
 }
 
-.create-note-btn-svg {
+.note-btn-svg {
     padding-right: 8px;
 }
 
@@ -278,4 +278,14 @@ a.navbar-brand {
 }
 .save-changes{
    
+}
+.item-note-nav {
+    padding: 1vh 1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.item-note-nav a {
+    color: #212529;
+    text-decoration: none;
 }
