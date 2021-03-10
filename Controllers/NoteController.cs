@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TestTwinCoreProject.Models;
 using TestTwinCoreProject.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace TestTwinCoreProject.Controllers
 {
@@ -15,8 +18,10 @@ namespace TestTwinCoreProject.Controllers
     {
         private readonly UserManager<Account> userManager;
         private readonly TwinCoreDbContext context;
-        public NoteController(UserManager<Account> userManager,TwinCoreDbContext context)
+        private readonly IHostingEnvironment environment;
+        public NoteController(UserManager<Account> userManager,TwinCoreDbContext context,IHostingEnvironment environment)
         {
+            this.environment = environment;
             this.context = context;
             this.userManager = userManager;
         }
@@ -76,14 +81,15 @@ namespace TestTwinCoreProject.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrEdit(Guid? id, Note note)
+        public async Task<IActionResult> CreateOrEdit(Guid? id, Note note, IFormFileCollection uploads)
         {
             if (ModelState.IsValid)
             {
+                Account user;
                 if (id == Guid.Empty)
                 {
                     note.DateTime=DateTime.Now;
-                    var user = await userManager.GetUserAsync(User);
+                    user = await userManager.GetUserAsync(User);
                     note.AccountId = user.Id;
 
                     await context.Notes.AddAsync(note);
@@ -93,7 +99,7 @@ namespace TestTwinCoreProject.Controllers
                 {
                     try
                     {
-                        var user = await userManager.GetUserAsync(User);
+                        user = await userManager.GetUserAsync(User);
                         note.AccountId = user.Id;
                         context.Notes.Update(note);
                         await context.SaveChangesAsync();
@@ -125,6 +131,21 @@ namespace TestTwinCoreProject.Controllers
                     FilterViewModel = new FilterViewModel("", DateTime.Now, DateTime.Now),
                     Notes = items
                 };
+
+                if (uploads != null)
+                {
+                    foreach (var uploadedFile in uploads)
+                    {
+                        string path = "/files/" + uploadedFile.FileName;
+                        using (var fileStream = new FileStream(environment.WebRootPath + path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                        FileModel file = new FileModel { Name = uploadedFile.FileName, TypeTo = FileModel.Type.Note, Guid = user.Id, Path = path, Extensions = uploadedFile.FileName.Split(new char[] { '.' })[1] };
+                        await context.Files.AddAsync(file);
+                    }
+                    await context.SaveChangesAsync();
+                }
 
                 return Json(new
                 {

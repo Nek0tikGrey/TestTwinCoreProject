@@ -92,3 +92,17 @@ AllInputEnable = (classCss) => {
     ChangeInformation("Email");
 
 }
+
+$(document).ready(function () {
+    var dropZone = $('#upload-container');
+
+    $('#file-input').focus(function () {
+        $('label').addClass('focus');
+    })
+        .focusout(function () {
+            $('label').removeClass('focus');
+        });
+
+
+
+});

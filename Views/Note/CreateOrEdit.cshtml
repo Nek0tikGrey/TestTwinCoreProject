@@ -12,7 +12,15 @@
     </div>
     <div class="form-group m-1">
         <label asp-for="Content" class="control-label">Вміст</label>
-        <textarea  asp-for="Content" class="form-control post-textarea" ></textarea>
+        <textarea asp-for="Content" class="form-control post-textarea"></textarea>
+    </div>
+
+    <div id="upload-container" class="upload-block">
+        <img id="upload-image" src="~/img/upload.svg">
+        <div>
+            <input id="file-input" class="hide" type="file" name="uploads" multiple tabindex="-1">
+            <label for="file-input">Выберите файл</label>
+        </div>
     </div>
 
     <div class="form-group">
