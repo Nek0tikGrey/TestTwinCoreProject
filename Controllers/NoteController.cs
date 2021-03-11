@@ -36,6 +36,12 @@ namespace TestTwinCoreProject.Controllers
             {
                 notes = notes.Where(predicate => predicate.Title.Contains(theme));
             }
+            if (dateFrom >DateTime.MinValue && dateTo >DateTime.MinValue)
+                notes = notes.Where(p => p.DateTime <= dateTo && p.DateTime >= dateFrom);
+            else if(dateTo!>DateTime.MinValue)
+                notes = notes.Where(p => p.DateTime <= dateTo);
+            else if(dateFrom>DateTime.MinValue)
+                notes = notes.Where(p => p.DateTime >= dateFrom);
             switch (sortOrder)
             {
                 case SortState.ThemeDesc:
@@ -142,7 +148,7 @@ namespace TestTwinCoreProject.Controllers
                         {
                             await uploadedFile.CopyToAsync(fileStream);
                         }
-                        FileModel file = new FileModel { Name = uploadedFile.FileName, TypeTo = FileModel.Type.Note, Guid = user.Id, Path = path, Extensions = uploadedFile.FileName.Split(new char[] { '.' })[1] };
+                        FileModel file = new FileModel { Name = uploadedFile.FileName, TypeTo = FileModel.Type.Note, Guid = note.Id, Path = path, Extensions = uploadedFile.FileName.Split(new char[] { '.' })[1] };
                         await context.Files.AddAsync(file);
                     }
                     await context.SaveChangesAsync();

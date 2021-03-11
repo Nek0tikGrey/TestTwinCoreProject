@@ -30,11 +30,11 @@
                             </div>
                             <div class="item-note-nav">
                                 <label>Дата з:</label>
-                                <input name="dateFrom" type="datetime" class="form-control" />
+                                <input name="dateFrom" type="date" class="form-control" />
                             </div>
                             <div class="item-note-nav">
                                 <label>Дата до:</label>
-                                <input name="dateTo" type="datetime" class="form-control" />
+                                <input name="dateTo" type="date" class="form-control" />
                             </div>
                         </div>
 
@@ -53,7 +53,7 @@
                         </div>
                         <div class="note-btn item-note-nav m-1">
                             <a asp-action="Index"
-                               asp-route-sortOrder="@(Model.SortViewModel.ThemeSort)"
+                               asp-route-sortOrder="@(Model.SortViewModel.DateSort)"
                                asp-route-name="@(Model.FilterViewModel.SelectedNoteTheme)">Дата</a>
                         </div>
                     </div>
