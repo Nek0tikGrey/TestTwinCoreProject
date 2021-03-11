@@ -20,21 +20,24 @@
         </div>
 
         <div class="mb-3">
-            <div>
+            <div class="note-control-nav">
                 <form method="get">
-                    <div class="d-inline-flex flex-md-wrap">
-                        <div class="item-note-nav">
-                            <label>Тема:</label>
-                            <input name="theme" type="text" value="@Model.FilterViewModel.SelectedNoteTheme" class="form-control" />
+                    <div class="d-flex flex-md-wrap justify-content-between">
+                        <div class="d-inline-flex flex-md-wrap">
+                            <div class="item-note-nav">
+                                <label>Тема:</label>
+                                <input name="theme" type="text" value="@Model.FilterViewModel.SelectedNoteTheme" class="form-control" />
+                            </div>
+                            <div class="item-note-nav">
+                                <label>Дата з:</label>
+                                <input name="dateFrom" type="datetime" class="form-control" />
+                            </div>
+                            <div class="item-note-nav">
+                                <label>Дата до:</label>
+                                <input name="dateTo" type="datetime" class="form-control" />
+                            </div>
                         </div>
-                        <div class="item-note-nav">
-                            <label>Дата з:</label>
-                            <input name="dateFrom" type="datetime" class="form-control" />
-                        </div>
-                        <div class="item-note-nav">
-                            <label>Дата до:</label>
-                            <input name="dateTo" type="datetime" class="form-control" />
-                        </div>
+
                         <div class="item-note-nav" style="justify-content:flex-end">
                             <input type="submit" value="Пошук" class="note-btn" />
                         </div>

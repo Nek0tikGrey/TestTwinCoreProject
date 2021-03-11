@@ -353,3 +353,7 @@ a.navbar-brand {
     background-color: #fafafa;
     outline-offset: -17px;
 }
+.note-control-nav {
+    background-color: #96958c;
+    border-radius: 25px;
+}
