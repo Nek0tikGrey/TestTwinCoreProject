@@ -107,7 +107,6 @@ namespace TestTwinCoreProject.Controllers
                     {
                         user = await userManager.GetUserAsync(User);
                         note.AccountId = user.Id;
-                        note.DateTime = context.Notes.Find(note.Id).DateTime;
                         context.Notes.Update(note);
                         await context.SaveChangesAsync();
 

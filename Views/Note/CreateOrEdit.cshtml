@@ -6,6 +6,8 @@
 
 <form asp-action="CreateOrEdit" asp-controller="Note" asp-route-id="@Model.Id" onsubmit="return  jQueryAjaxPost(this);" autocomplete="off">
     <div asp-validation-summary="All" class="text-danger"></div>
+    <input class="hide" asp-for="Id" />
+    <input class="hide" asp-for="DateTime" />
     <div class="form-group m-1">
         <label asp-for="Title" class="control-label">Заголовок</label>
         <input type="text" asp-for="Title" class="form-control" />
