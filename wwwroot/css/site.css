@@ -190,6 +190,11 @@ a.navbar-brand {
 
 .post-content-img {
     max-width: inherit;
+    display: flex;
+    justify-content: center;
+}
+.post-content-img img{
+    max-width:20%;
 }
 
 .post-img {

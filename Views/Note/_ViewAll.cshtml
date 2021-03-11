@@ -12,9 +12,7 @@
             <div class="post-content">
                 @note.Content
             </div>
-            <div class="post-content-img">
-
-            </div>
+            <file guid="@note.Id"></file>
             <div class="post-date">@note.DateTime.ToShortDateString()</div>
             <div class="post-controls d-flex justify-content-md-start">
                 <a class="m-1" onclick="showInPopup('@Url.Action("CreateOrEdit", "Note", new { id = @note.Id }, Context.Request.Scheme)', 'Редагувати нотатку')">
