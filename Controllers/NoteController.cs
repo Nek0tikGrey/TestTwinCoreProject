@@ -101,6 +101,7 @@ namespace TestTwinCoreProject.Controllers
                     {
                         user = await userManager.GetUserAsync(User);
                         note.AccountId = user.Id;
+                        note.DateTime = context.Notes.Find(note.Id).DateTime;
                         context.Notes.Update(note);
                         await context.SaveChangesAsync();
 
@@ -169,6 +170,9 @@ namespace TestTwinCoreProject.Controllers
                 var note =await context.Notes.FindAsync(id);
                 if (note != null)
                 {
+                    if ((DateTime.Now-note.DateTime).TotalDays >= 2)
+                        return Forbid("Notes older than 2 days is forbiden");
+
                     context.Notes.Remove(note);
                     await context.SaveChangesAsync();
 
