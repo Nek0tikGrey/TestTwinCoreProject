@@ -111,6 +111,12 @@ namespace TestTwinCoreProject.Controllers
                         }
                     }
             }
+            System.IO.File.Delete(_enviroment.WebRootPath + "/Captcha/" + model.CaptchaCodeGen + ".png");
+
+            model.CaptchaCodeGen= new Random().Next(0, 6666).ToString();
+            CaptchaImage captcha = new CaptchaImage(model.CaptchaCodeGen, 290, 80);
+            captcha.Image.Save(_enviroment.WebRootPath + "/Captcha/" + model.CaptchaCodeGen + ".png", System.Drawing.Imaging.ImageFormat.Png);
+
             return View(model);
         }
         [AllowAnonymous]
@@ -126,24 +132,30 @@ namespace TestTwinCoreProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if(user!=null)
+                if (! user.IsDeleted)
                 {
-                    // проверяем, принадлежит ли URL приложению
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    var result =
+                        await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
                     {
-                        return Redirect(model.ReturnUrl);
+                        // проверяем, принадлежит ли URL приложению
+                        if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                        {
+                            return Redirect(model.ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
-                }
+                else ModelState.AddModelError("", "Пользователя не существует");
             }
             return View(model);
         }
@@ -152,7 +164,6 @@ namespace TestTwinCoreProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -234,14 +245,70 @@ namespace TestTwinCoreProject.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAvatar()
         {
-            // var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             string path = "";
-            /*path= _context.Files.LastOrDefault(p => p.Guid == user.Id).Path;*/
-
-            if (path == string.Empty) path = "img/avatar.png";
+            try
+            {
+                path = _context.Files.LastOrDefault(p => p.Guid == user.Id).Path;
+            }
+            catch (Exception)
+            {
+                path = "img/avatar.png";
+            }
             ViewData.Add("img", path);
             return PartialView();
         }
+        [HttpPost]
+        public async Task<ActionResult> Delete()
+        {
+            Account user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                    return NotFound();
+            }
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index","Home");
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult RestoreAccount()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreAccount(RestoreAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Пользователя с данными логином и паролем не существует");
+                    return View(model);
+                }
 
+                var result =
+                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+             
+                user.IsDeleted = false;
+                user.DeletedDate = DateTime.MinValue;
+                await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                }
+
+            }
+            return View(model);
+
+        }
     }
 }

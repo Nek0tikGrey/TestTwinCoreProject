@@ -76,15 +76,20 @@
                         }
                         else
                         {  
-                            <div class="dropdown">
-                               <a class="avatar-btn btn btn-secondary dropdown-toggle" href="#" role="button" id="Avatar" data-bs-toggle="dropdown" aria-expanded="false">
-                                   <img width="35px" src="~/img/avatar.png"/>
-                               </a>
+                    <div class="dropdown">
+                        <a class="avatar-btn btn btn-secondary dropdown-toggle" href="#" role="button" id="Avatar" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img width="35px" src="~/img/avatar.png" />
+                        </a>
 
-                               <ul class="dropdown-menu p-0 bg-dark " aria-labelledby="Avatar">
-                                   <li><a class="dropdown-item text-light avatar-item-menu" asp-controller="Account" asp-action="Login">Вход</a></li>
-                               </ul>
-                           </div>
+                        <ul class="dropdown-menu p-0 bg-dark " aria-labelledby="Avatar">
+                            <li>
+                                <a class="dropdown-item text-light avatar-item-menu" asp-controller="Account" asp-action="Login">Вход</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-light avatar-item-menu" asp-controller="Account" asp-action="RestoreAccount">Відновлення доступа</a>
+                            </li>
+                        </ul>
+                    </div>
                         }
                     </div>
                 </div>

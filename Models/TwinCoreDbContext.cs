@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TestTwinCoreProject.Models
 {
@@ -18,6 +21,46 @@ namespace TestTwinCoreProject.Models
         {
             base.OnModelCreating(builder);
             builder.Entity<Account>().Property(p => p.Id).ValueGeneratedOnAdd();
+        }
+
+        private void DbSaveChanges()
+        {
+            var date = DateTime.Now;
+            var Entities = ChangeTracker.Entries().Where(prop => prop.State == EntityState.Deleted);
+            foreach(var entity in Entities)
+            {
+                if(entity.Entity is not Account)
+                {
+                    continue;
+                }
+                if (!(bool)entity.CurrentValues["IsDeleted"])
+                {
+                    entity.State = EntityState.Modified;
+                    entity.CurrentValues["IsDeleted"] = true;
+                    entity.CurrentValues["DeletedDate"] = date;
+                }
+            }
+        }
+
+        public override int SaveChanges()
+        {
+            DbSaveChanges();
+            return base.SaveChanges();
+        }
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            DbSaveChanges();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            DbSaveChanges();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            DbSaveChanges();
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

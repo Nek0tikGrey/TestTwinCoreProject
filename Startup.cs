@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestTwinCoreProject.Models;
+using TestTwinCoreProject.Utility;
 
 namespace TestTwinCoreProject
 {
@@ -30,6 +31,8 @@ namespace TestTwinCoreProject
                 .AddDefaultTokenProviders();
 
              services.AddControllersWithViews();
+
+            services.AddHostedService<TimerDeletingHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
