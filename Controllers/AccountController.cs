@@ -17,8 +17,8 @@ namespace TestTwinCoreProject.Controllers
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
         private readonly TwinCoreDbContext _context;
-        private readonly IHostingEnvironment _enviroment;
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, TwinCoreDbContext context,IHostingEnvironment enviroment)
+        private readonly IWebHostEnvironment _enviroment;
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, TwinCoreDbContext context,IWebHostEnvironment enviroment)
         {
             _userManager = userManager;
             _signInManager = signInManager;

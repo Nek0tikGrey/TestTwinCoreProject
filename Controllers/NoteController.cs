@@ -10,6 +10,7 @@ using TestTwinCoreProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using TestTwinCoreProject.Utility.CryptoInfrastructure;
 
 namespace TestTwinCoreProject.Controllers
 {
@@ -18,20 +19,21 @@ namespace TestTwinCoreProject.Controllers
     {
         private readonly UserManager<Account> userManager;
         private readonly TwinCoreDbContext context;
-        private readonly IHostingEnvironment environment;
-        public NoteController(UserManager<Account> userManager,TwinCoreDbContext context,IHostingEnvironment environment)
+        private readonly IWebHostEnvironment environment;
+        private ICryptoService cryptoService;
+        public NoteController(UserManager<Account> userManager,TwinCoreDbContext context,IWebHostEnvironment environment, ICryptoService cryptoService)
         {
+            this.cryptoService = cryptoService;
             this.environment = environment;
             this.context = context;
             this.userManager = userManager;
         }
         public async Task<IActionResult> Index(string theme, DateTime dateFrom,DateTime dateTo,int page=1, SortState sortOrder=SortState.ThemeAsc)
         {
-            //    var user = await userManager.GetUserAsync(User);
-            //    var data = context.Notes.Where(p => p.AccountId == user.Id);
-            //    return View(await data.ToListAsync());
             int pageSize = 5;
             IQueryable<Note> notes = context.Notes.Where(p => p.AccountId == userManager.GetUserAsync(User).Result.Id);
+            foreach (var t in notes)
+                cryptoService.Decrypt(t);
             if (!String.IsNullOrEmpty(theme))
             {
                 notes = notes.Where(predicate => predicate.Title.Contains(theme));
@@ -78,6 +80,7 @@ namespace TestTwinCoreProject.Controllers
             else
             {
                 var note = await context.Notes.FindAsync(id);
+                cryptoService.Decrypt(note);
                 if (note != null) return View(note);
                 else
                 {
@@ -97,7 +100,7 @@ namespace TestTwinCoreProject.Controllers
                     note.DateTime=DateTime.Now;
                     user = await userManager.GetUserAsync(User);
                     note.AccountId = user.Id;
-
+                    cryptoService.Encrypt(note);
                     await context.Notes.AddAsync(note);
                     await context.SaveChangesAsync();
                 }
@@ -107,6 +110,7 @@ namespace TestTwinCoreProject.Controllers
                     {
                         user = await userManager.GetUserAsync(User);
                         note.AccountId = user.Id;
+                        cryptoService.Encrypt(note);
                         context.Notes.Update(note);
                         await context.SaveChangesAsync();
 
@@ -125,18 +129,6 @@ namespace TestTwinCoreProject.Controllers
                     }
                    
                 }
-                int pageSize = 5;
-                IQueryable<Note> notes = context.Notes.Where(p => p.AccountId == userManager.GetUserAsync(User).Result.Id);
-                notes = notes.OrderByDescending(s => s.Title);
-                var count = await notes.CountAsync();
-                var items = await notes.Skip((1 - 1) * pageSize).Take(pageSize).ToListAsync();
-                NoteIndexViewModel viewModel = new NoteIndexViewModel
-                {
-                    PageViewModel = new PageViewModel(count, 1, pageSize),
-                    SortViewModel = new SortViewModel(SortState.ThemeAsc),
-                    FilterViewModel = new FilterViewModel("", DateTime.Now, DateTime.Now),
-                    Notes = items
-                };
 
                 if (uploads != null)
                 {
@@ -153,6 +145,20 @@ namespace TestTwinCoreProject.Controllers
                     await context.SaveChangesAsync();
                 }
 
+                int pageSize = 5;
+                IQueryable<Note> notes = context.Notes.Where(p => p.AccountId == userManager.GetUserAsync(User).Result.Id);
+                foreach (var t in notes)
+                    cryptoService.Decrypt(t);
+                notes = notes.OrderByDescending(s => s.Title);
+                var count = await notes.CountAsync();
+                var items = await notes.Skip((1 - 1) * pageSize).Take(pageSize).ToListAsync();
+                NoteIndexViewModel viewModel = new NoteIndexViewModel
+                {
+                    PageViewModel = new PageViewModel(count, 1, pageSize),
+                    SortViewModel = new SortViewModel(SortState.ThemeAsc),
+                    FilterViewModel = new FilterViewModel("", DateTime.Now, DateTime.Now),
+                    Notes = items
+                };
                 return Json(new
                 {
                     IsValid = true,
