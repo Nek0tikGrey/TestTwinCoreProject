@@ -1,41 +1,46 @@
 ﻿@model TestTwinCoreProject.ViewModels.RegisterViewModel
-<h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="DateBirthday"></label><br />
-        <input asp-for="DateBirthday" />
-        <span asp-validation-for="DateBirthday"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="PasswordConfirm"></label><br />
-        <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
-    </div>
-    <div>
-        <label asp-for="InviteCode"></label><br />
-        <input asp-for="InviteCode" />
-        <span asp-validation-for="InviteCode"></span>
-    </div>
-    <div>
-        <input class="hide" asp-for="CaptchaCodeGen" />
-
-        <label asp-for="CaptchaCode"></label><br />
-        <img src="~/Captcha/@String.Concat($"{@Model.CaptchaCodeGen}",".png")" /><br />
-        <input asp-for="CaptchaCode" autocomplete="off" />
-        <span asp-validation-for="CaptchaCode"></span>
-    </div>
-    <div>
-        <input type="submit" value="Регистрация" />
-    </div>
-</form>
+@{
+    ViewData["Title"]="Регистрация нового пользователя";
+}
+<section class="register">
+    <form class="register-form" method="post" asp-controller="Account" asp-action="Register">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="register-form-item">
+            <label asp-for="Email"></label><br />
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="register-form-item">
+            <label asp-for="DateBirthday"></label><br />
+            <input asp-for="DateBirthday" type="date"/>
+            <span asp-validation-for="DateBirthday"></span>
+        </div>
+        <div class="register-form-item">
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="register-form-item">
+            <label asp-for="PasswordConfirm"></label><br />
+            <input asp-for="PasswordConfirm" />
+            <span asp-validation-for="PasswordConfirm"></span>
+        </div>
+        <div class="register-form-item">
+            <label asp-for="InviteCode"></label><br />
+            <input asp-for="InviteCode" />
+            <span asp-validation-for="InviteCode"></span>
+        </div>
+        <div class="register-form-item register-captcha">
+            <input class="hide" asp-for="CaptchaCodeGen" />
+            <div>
+                <label asp-for="CaptchaCode"></label><br />
+                <img src="~/Captcha/@String.Concat($"{@Model.CaptchaCodeGen}",".png")" /><br />
+                <input asp-for="CaptchaCode" autocomplete="off" />
+                <span asp-validation-for="CaptchaCode"></span>
+            </div>
+        </div>
+        
+         <input class="btn-sd register-btn" type="submit" value="Регистрация" />
+       
+    </form>
+</section>

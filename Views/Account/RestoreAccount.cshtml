@@ -1,20 +1,24 @@
 ﻿@model TestTwinCoreProject.ViewModels.RestoreAccountViewModel
+@{ 
+    ViewData["Title"] = "Востановления удаленного аккаунта";
+}
+<section class="d-flex justify-content-center">
+    <form class="login-form" method="post" asp-controller="Account" asp-action="RestoreAccount">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="Email"></label><br />
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="d-flex justify-content-end">
+            <input class="btn-sd" type="submit" value="Відновити доступ" />
+        </div>
 
-<h2>Відновлення доступа</h2>
-<form method="post" asp-controller="Account" asp-action="RestoreAccount">
-    @Html.AntiForgeryToken()
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <input type="submit" value="Відновити доступ" />
-    </div>
-</form>
+    </form>
+</section>
