@@ -1,13 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap');
 a {
   color: #0366d6;
 }
@@ -60,7 +54,8 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: "Open Sans"
 }
 .footer {
   position: absolute;
@@ -68,4 +63,402 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.form-control, .input-group-text {
+    border: 1px solid #0080ff;
+}
+
+a.btn:hover {
+    cursor: pointer !important;
+}
+/*loader*/
+.loaderbody {
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    background-color: rgba(128,128,128,0.2);
+    z-index: 2147483647;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 45%;
+    left: 40%;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.avatar-btn {
+    border: none;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.avatar-item-menu {
+    transition-delay: 0.1s;
+}
+.avatar-item-menu:hover {
+     background-color: #588184 !important;
+}
+.avatar-item-menu-btn {
+    border: none;
+    background: transparent;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+    .avatar-item-menu-btn:focus {
+        outline: none;
+    }
+
+@media screen and (max-width: 576px) {
+    .navbar-menu-item {
+        position: absolute;
+        top: 100%;
+        left: 0px;
+    }
+
+    .navbar-menu-item li { padding: 5px 10px; }
+}
+
+
+
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: keep-all;
+}
+
+.post {
+    background-color: #F5F5FE;
+    margin: 0 auto;
+    margin-bottom: 35px;
+    font-family: 'Open Sans', sans-serif;
+    padding: 10px 10px 2px 10px;
+}
+
+.title {
+    display: block;
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 31px;
+    margin-bottom: 20px;
+}
+
+.post-content::before {
+    display: block;
+    content: "";
+    height: 2px;
+    width: 11vw;
+    padding: 3px 0;
+    margin-bottom: 7px;
+    background-color: #004a8f;
+}
+
+.post-content {
+    font-weight: 300;
+    font-size: 21px;
+    line-height: 31px;
+}
+
+.post-content-img {
+    max-width: inherit;
+    display: flex;
+    justify-content: center;
+}
+.post-content-img img{
+    max-width:20%;
+}
+
+.post-img {
+    object-fit: cover;
+    max-width: -webkit-fill-available;
+}
+
+.post-date {
+    text-align: right;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.note-btn {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    align-items: center;
+    width: -webkit-fill-available;
+    border: 1px solid #d5d5d5;
+    border-radius: 35px !important;
+    background-color: #ebebeb;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.note-btn:hover {
+    background-color: #d4d4d4;
+    transition-duration: 0.3s;
+}
+
+.note-btn-svg {
+    padding-right: 8px;
+}
+
+.post-textarea {
+    height: 50vh;
+}
+
+.post-delete {
+    background-image: url("/img/trash.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: inherit;
+    border: none;
+}
+
+.user-img img{
+    max-width: 250px;
+    margin: 0 0 3vh 0;
+}
+.user-information {
+    
+
+}
+.user-information-item {
+    display: flex;
+    padding: 1vh 0;
+}
+.user-information-item span {
+    display: block;   
+}
+.user-information-item-text {
+    display: block;
+    padding: 1vh 1vw;
+    border: 1mm ridge transparent;
+    font-size: 1.2em;
+    margin-left: auto;
+    width: 250px;
+}
+
+.user-information-item span:first-child {
+    flex: 1 1 auto;
+    align-self: center;
+}
+.user-information-change {
+    background-image: url("../img/edit-2.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    content: " ";
+    min-width: 30px;
+}
+
+.user-information-item-text-change {
+    border: 1mm ridge rgb(6, 2, 8, 0.6);
+}
+.save-changes{
+   
+}
+.item-note-nav {
+    padding: 1vh 1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.item-note-nav a {
+    color: #212529;
+    text-decoration: none;
+}
+
+.upload-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 160px;
+    outline: 2px dashed #5d5d5d;
+    outline-offset: -12px;
+    background-color: #e0f2f7;
+    color: #1f3c44;
+}
+
+#upload-container img {
+    width: 20%;
+    margin-bottom: 20px;
+    user-select: none;
+}
+
+#upload-container label {
+    font-weight: bold;
+}
+
+#upload-container label:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#upload-container div {
+    position: relative;
+    z-index: 10;
+}
+
+#upload-container input[type=file] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    position: absolute;
+    z-index: -10;
+}
+#upload-container input[type=file]:focus + label {
+    outline: 1px solid #0078d7;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+#upload-container label.focus {
+    outline: 1px solid #0078d7;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+#upload-container.dragover {
+    background-color: #fafafa;
+    outline-offset: -17px;
+}
+.note-control-nav {
+    background-color: #96958c;
+    border-radius: 25px;
+}
+.user-delete-btn {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    align-items: center;
+    width: -webkit-fill-available;
+    border: 1px solid #d5d5d5;
+    border-radius: 35px !important;
+    background-color: #ebebeb;
+    font-style: italic;
+    font-weight: 300;
+}
+.control-account{
+    margin-left:auto;
+    margin-bottom:15px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+.change-pas{
+
+}
+.login-form input, .login-form input:focus, .register-form input, .register-form input:focus, .change-pas-form input, .change-pas-form input:focus {
+    border: 5px solid #d5d5d5;
+    padding: 10px 35px;
+    border-radius: 10px;
+    background-color: #ebebeb;
+    font-style: italic;
+    font-weight: 300;
+}
+.login-form input:focus, .register-form input:focus, .change-pas-form input:focus {
+    border: 5px solid #7b7b7b;
+    border-radius: 10px;
+    outline: none;
+    transition-duration: 0.3s;
+}
+.login-form div {
+    padding: 0 0 15px 0;
+}
+.btn-sd {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    align-items: center;
+    width: -webkit-fill-available;
+    background-color: #ebebeb;
+    font-style: italic;
+    font-weight: 300;
+
+    border: 5px solid #d5d5d5;
+    border-radius: 10px;
+}
+.register {
+    display:flex;
+    justify-content:center;
+}
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+.register-btn {
+    margin: auto;
+}
+.register-form-item{
+    margin: 10px 0;
+    border: 3px solid #7b7b7b;
+    border-radius: 10px;
+    display:flex;
+    padding: 15px 30px;
+}
+.register-form label{
+    flex: 1 1 auto;
+    padding:0 15vw 0 0;
+    margin:auto;
+}
+.register-captcha {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+}
+.change-pas {
+}
+.change-pas-form{
+    display:flex;
+    align-content:center;
+    flex-direction:column;
+    
+}
+.change-pas-item {
+    margin: 10px auto;
+    padding:15px 30px;
+}
+.change-pas-account {
+    margin-left: auto;
+    margin-bottom: 20px
+}
+.control-account a{
+    text-decoration:none;
+    color:inherit;
 }

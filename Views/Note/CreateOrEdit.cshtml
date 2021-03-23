@@ -1,0 +1,31 @@
+﻿@model TestTwinCoreProject.Models.Note
+@{
+    ViewBag.Title = "Додати";
+    Layout = null;
+}
+
+<form asp-action="CreateOrEdit" asp-controller="Note" asp-route-id="@Model.Id" onsubmit="return  jQueryAjaxPost(this);" autocomplete="off">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input class="hide" asp-for="Id" />
+    <input class="hide" asp-for="DateTime" />
+    <div class="form-group m-1">
+        <label asp-for="Title" class="control-label">Заголовок</label>
+        <input type="text" asp-for="Title" class="form-control" />
+    </div>
+    <div class="form-group m-1">
+        <label asp-for="Content" class="control-label">Вміст</label>
+        <textarea asp-for="Content" class="form-control post-textarea"></textarea>
+    </div>
+
+    <div id="upload-container" class="upload-block">
+        <img id="upload-image" src="~/img/upload.svg">
+        <div>
+            <input id="file-input" class="hide" type="file" name="uploads" multiple tabindex="-1">
+            <label for="file-input">Выберите файл</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Добавить" class="btn btn-outline-secondary" />
+    </div>
+</form>

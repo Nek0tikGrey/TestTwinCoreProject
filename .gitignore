@@ -338,4 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/wwwroot/files/20200706_210038 (2).jpg
+/wwwroot/files
+/wwwroot/Captcha
 /DataInitializer.cs

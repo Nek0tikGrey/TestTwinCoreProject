@@ -1,0 +1,54 @@
+﻿@model TestTwinCoreProject.ViewModels.UserAccountViewModel
+@{
+    ViewData["Title"] = "Моя страница";
+}
+
+<div class="container-md">
+    <div class="d-flex align-items-center flex-column justify-content-center mt-5 pt-5">
+        <div class="user-img">
+            <a class="user-avatar-change">
+                <img src="~/img/avatar.png" />
+            </a>
+        </div>
+        <form method="post" asp-controller="Account" asp-action="ChangeUserInformation">
+            <div class="user-information ">
+                <div class="hide">
+                    <span>Id</span>
+                    <input asp-for="Id" class="user-information-item-text" value="@Model.Id"/>
+                    <span></span>
+                </div>
+
+                <div class="user-information-item">
+                    <span>UserName</span>
+                    <input asp-for="UserName" id="UserName"  type="text" class="user-information-item-text" disabled value="@Model.UserName" />
+                    <a class="user-information-change" onclick="ChangeInformation('UserName')"></a>
+                </div>
+
+                <div class="user-information-item">
+                    <span>Birthday</span>
+                    <input id="BirhDate" asp-for="BirthDate" type="date" class="user-information-item-text" disabled value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
+                    <a class="user-information-change" onclick="ChangeInformation('BirhDate')"></a>
+                </div>
+
+                <div class="user-information-item">
+                    <span>Email</span>
+                    <input asp-for="Email" id="Email" type="text" class="user-information-item-text" disabled value="@Model.Email" />
+                    <a class="user-information-change" onclick="ChangeInformation('Email')"></a>
+                </div>
+
+                <div id="sbm-btn" class="hide">
+                    <input class="user-information-btn" type="submit" onclick="AllInputEnable('user-information')" value="Зберегти зміни" />
+                </div>
+            </div>
+        </form>
+        <div class="control-account">
+            <a class="btn-sd" asp-controller="Account" asp-action="ChangePassword">Змінити пароль</a>
+        </div>
+        <div class="control-account">
+            <form method="post" asp-controller="Account" asp-action="Delete">
+                <input class="btn-sd" type="submit" value="Видалити" />
+            </form>
+        </div>
+
+    </div>
+</div>
