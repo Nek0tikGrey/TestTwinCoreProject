@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TestTwinCoreProject.Models;
 
 namespace TestTwinCoreProject.Controllers
 {
-
+    [Authorize(Roles = "User")]
     public class FileController : Controller
     {
         TwinCoreDbContext _context;
