@@ -140,7 +140,6 @@ namespace TestTwinCoreProject.Controllers
                         await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        // проверяем, принадлежит ли URL приложению
                         if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                         {
                             return Redirect(model.ReturnUrl);

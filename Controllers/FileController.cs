@@ -21,7 +21,6 @@ namespace TestTwinCoreProject.Controllers
             _context = context;
             _appEnvironment = webHostEnvironment;
         }
-        //public async Task<IActionResult> Index() => View(await _context.Files.ToListAsync());
         [HttpPost]
         public async Task<IActionResult> AddFiles(IFormFileCollection uploads,FileModel.Type type, Guid guid)
         {
@@ -39,25 +38,7 @@ namespace TestTwinCoreProject.Controllers
 
             return Ok();
         }
-        //[HttpGet]
-        //public async Task<IActionResult> ShowFile(Guid id)
-        //{       
-        //    FileModel result =await _context.Files.Where(op => op.Id == id).FirstOrDefaultAsync();
-        //    if (result != null)
-        //        return View(result);
-        //    else
-        //        return NotFound();
-        //}
 
-        //private async Task<IActionResult> GetFile(Guid id)
-        //{
-        //    FileModel file = await _context.Files.Where(op => op.Id == id).FirstOrDefaultAsync();
-        //    if (file == null)
-        //        return NotFound();
-        //    string path = _appEnvironment.WebRootPath + file.Path;
-           
-        //    return PhysicalFile(path, "application/" + file.Extensions, file.Name);
-        //}
 
     }
 }
