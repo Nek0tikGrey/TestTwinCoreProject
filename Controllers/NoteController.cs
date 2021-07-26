@@ -30,20 +30,25 @@ namespace TestTwinCoreProject.Controllers
         }
         public async Task<IActionResult> Index(string theme, DateTime dateFrom,DateTime dateTo,int page=1, SortState sortOrder=SortState.ThemeAsc)
         {
+            var account = await userManager.GetUserAsync(User);
+
             int pageSize = 5;
-            IQueryable<Note> notes = context.Notes.Where(p => p.AccountId == userManager.GetUserAsync(User).Result.Id);
-            foreach (var t in notes)
-                cryptoService.Decrypt(t);
+            IQueryable<Note> notes = context.Notes.Where(p => p.AccountId == account.Id);
+            
             if (!String.IsNullOrEmpty(theme))
             {
                 notes = notes.Where(predicate => predicate.Title.Contains(theme));
             }
+
             if (dateFrom >DateTime.MinValue && dateTo >DateTime.MinValue)
                 notes = notes.Where(p => p.DateTime <= dateTo && p.DateTime >= dateFrom);
             else if(dateTo!>DateTime.MinValue)
                 notes = notes.Where(p => p.DateTime <= dateTo);
             else if(dateFrom>DateTime.MinValue)
-                notes = notes.Where(p => p.DateTime >= dateFrom);
+                notes = notes.Where(p => p.DateTime >= dateFrom);           
+
+            var count = await notes.CountAsync();
+
             switch (sortOrder)
             {
                 case SortState.ThemeDesc:
@@ -59,8 +64,11 @@ namespace TestTwinCoreProject.Controllers
                     notes = notes.OrderBy(s => s.Title);
                     break;
             }
-            var count = await notes.CountAsync();
+
             var items = await notes.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            foreach (var t in items)
+                cryptoService.Decrypt(t);
 
             NoteIndexViewModel viewModel = new NoteIndexViewModel
             {

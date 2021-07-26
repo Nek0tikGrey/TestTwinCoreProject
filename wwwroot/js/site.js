@@ -73,7 +73,6 @@ jQueryAjaxDelete = form => {
 
 $(document).ready(function () {
 
-
     $("#Avatar").load("/Account/ShowAvatar");
 
 });

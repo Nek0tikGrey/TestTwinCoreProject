@@ -14,7 +14,6 @@ namespace TestTwinCoreProject.Controllers
     [Authorize(Roles ="User")]
     public class UserController : Controller
     {
-        private static readonly RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
         readonly UserManager<Account> _userManager;
         private readonly TwinCoreDbContext context;
         public UserController(UserManager<Account> userManager, TwinCoreDbContext context)
